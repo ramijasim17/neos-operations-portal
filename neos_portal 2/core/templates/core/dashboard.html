@@ -1,0 +1,5 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
+<p>Use the sidebar to navigate. Available sections are based on your account role.</p>
+{% endblock %}

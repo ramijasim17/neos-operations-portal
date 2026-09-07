@@ -1,0 +1,20 @@
+{% extends "core/base_unauthenticated.html" %}
+{% block content %}
+<div class="auth-card">
+  <h1>NEOS Operations Portal</h1>
+  <p class="auth-sub">Sign in with your assigned account.</p>
+  {% if form.errors %}
+    <div class="alert alert-error">Incorrect username or password.</div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <label for="id_username">Username</label>
+    {{ form.username }}
+    <label for="id_password">Password</label>
+    {{ form.password }}
+    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+  </form>
+  <a class="auth-link" href="{% url 'accounts:password_reset' %}">Forgot your password?</a>
+  <p class="auth-footnote">Don't have an account? Ask your administrator to create one for you — this portal doesn't support self-signup.</p>
+</div>
+{% endblock %}

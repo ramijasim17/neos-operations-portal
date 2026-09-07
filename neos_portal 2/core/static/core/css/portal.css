@@ -1,0 +1,81 @@
+:root{
+  --bg:#0e1117; --surface:#1a1f29; --border:#2a3140;
+  --text:#e7eaf0; --text-secondary:#9aa4b2; --text-muted:#6b7482;
+  --accent:#4c8dff;
+  --danger:#ff6b6b;  --danger-bg:rgba(255,107,107,0.12);
+  --warning:#ffb84d; --warning-bg:rgba(255,184,77,0.12);
+  --success:#4ade80; --success-bg:rgba(74,222,128,0.12);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:14px;
+}
+a{color:var(--accent);}
+
+/* ── layout ── */
+.app-shell{display:flex; min-height:100vh;}
+.sidebar{
+  width:220px; flex:none; background:var(--surface); border-right:1px solid var(--border);
+  padding:20px 14px; display:flex; flex-direction:column;
+}
+.sidebar .brand{font-weight:700; font-size:15px; margin-bottom:20px; padding:0 6px;}
+.sidebar nav a{
+  display:block; padding:9px 10px; border-radius:8px; color:var(--text-secondary);
+  text-decoration:none; font-size:13.5px; margin-bottom:2px;
+}
+.sidebar nav a.active, .sidebar nav a:hover{ background:var(--bg); color:var(--text); }
+.sidebar .user-box{margin-top:auto; padding-top:14px; border-top:1px solid var(--border); font-size:12.5px; color:var(--text-muted);}
+.link-button{
+  background:none; border:none; padding:0; margin:0; color:var(--accent);
+  font-size:inherit; font-family:inherit; cursor:pointer; text-decoration:underline;
+}
+.main{flex:1; padding:28px 32px; max-width:1200px;}
+
+/* ── stat cards (same shape as the Streamlit tabs) ── */
+.nc-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:6px 0 18px;}
+.nc-stat{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px;}
+.nc-stat .lbl{font-size:12px; color:var(--text-secondary); margin-bottom:4px;}
+.nc-stat .val{font-size:26px; font-weight:700;}
+.nc-stat.expired{background:var(--danger-bg); border-color:rgba(255,107,107,.25);}
+.nc-stat.expired .lbl,.nc-stat.expired .val{color:var(--danger);}
+.nc-stat.soon{background:var(--warning-bg); border-color:rgba(255,184,77,.25);}
+.nc-stat.soon .lbl,.nc-stat.soon .val{color:var(--warning);}
+.nc-stat.valid{background:var(--success-bg); border-color:rgba(74,222,128,.25);}
+.nc-stat.valid .lbl,.nc-stat.valid .val{color:var(--success);}
+
+/* ── table ── */
+table.data-table{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden;}
+table.data-table th{background:#20263a; text-align:left; padding:10px 14px; font-size:12px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.03em;}
+table.data-table td{padding:11px 14px; border-top:1px solid var(--border); font-size:13.5px;}
+table.data-table tr:hover td{background:#1e2530;}
+.pill{font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap;}
+.pill.expired{color:var(--danger); background:var(--danger-bg);}
+.pill.soon{color:var(--warning); background:var(--warning-bg);}
+.pill.valid{color:var(--success); background:var(--success-bg);}
+.pill.na{color:var(--text-muted); background:rgba(255,255,255,.06);}
+
+/* ── forms/buttons ── */
+input[type=text], input[type=password], input[type=email], input[type=date], select, textarea{
+  font-family:inherit; font-size:13.5px; padding:9px 12px; width:100%;
+  border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text);
+}
+.btn{
+  display:inline-block; padding:9px 16px; border-radius:8px; border:1px solid var(--border);
+  background:var(--surface); color:var(--text); text-decoration:none; font-size:13.5px;
+  font-weight:500; cursor:pointer;
+}
+.btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+.btn-block{width:100%; text-align:center;}
+
+/* ── auth pages ── */
+.auth-wrap{min-height:100vh; display:flex; align-items:center; justify-content:center;}
+.auth-card{width:360px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:32px;}
+.auth-card h1{font-size:18px; margin:0 0 4px;}
+.auth-sub{color:var(--text-secondary); font-size:13px; margin:0 0 20px;}
+.auth-card label{display:block; font-size:12.5px; color:var(--text-secondary); margin:12px 0 5px;}
+.auth-link{display:block; margin-top:14px; font-size:12.5px; text-align:center;}
+.auth-footnote{font-size:11.5px; color:var(--text-muted); margin-top:18px; text-align:center;}
+.alert{padding:10px 12px; border-radius:8px; font-size:13px; margin-bottom:14px;}
+.alert-error{background:var(--danger-bg); color:var(--danger);}
