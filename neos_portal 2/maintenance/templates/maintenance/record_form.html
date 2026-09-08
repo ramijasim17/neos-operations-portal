@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{% if mode == "edit" %}{{ record.equipment.serial_number }} · {{ record.level.name }}{% else %}Add maintenance record{% endif %}</h1>
+
+{% if record.file %}
+  <p><a href="{{ record.file.url }}" target="_blank">📄 View current file</a></p>
+{% endif %}
+
+<div class="table-wrap" style="padding:24px; max-width:480px;">
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <label>Equipment</label>{{ form.equipment }}
+  <label>Maintenance level</label>{{ form.level }}
+  <label>Due date</label>{{ form.due_date }}
+  <label>{% if record.file %}Replace file{% else %}File (optional){% endif %}</label>{{ form.file }}
+  <br><br>
+  <button type="submit" class="btn btn-primary">Save</button>
+  {% if mode == "edit" %}
+    <a class="btn" style="margin-left:8px;" href="{% url 'maintenance:delete' record.id %}">Delete</a>
+  {% endif %}
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Maintenance</h1>
+<p class="page-sub">Scheduled maintenance for equipment across all categories.</p>
+
+<div class="nc-stats">
+  <div class="nc-stat"><div class="lbl">Total records</div><div class="val">{{ total }}</div></div>
+  <div class="nc-stat expired"><div class="lbl">Overdue</div><div class="val">{{ counts.expired }}</div></div>
+  <div class="nc-stat soon"><div class="lbl">Due &lt; 30 days</div><div class="val">{{ counts.soon }}</div></div>
+  <div class="nc-stat valid"><div class="lbl">Scheduled</div><div class="val">{{ counts.valid }}</div></div>
+</div>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+  <form method="get" class="filter-bar" style="margin-bottom:0; flex:1;">
+    <input type="text" name="q" placeholder="Search serial number…" value="{{ request.GET.q }}">
+    <select name="level">
+      <option value="">All levels</option>
+      {% for lvl in levels %}
+        <option value="{{ lvl.name }}" {% if request.GET.level == lvl.name %}selected{% endif %}>{{ lvl.name }}</option>
+      {% endfor %}
+    </select>
+    <select name="status">
+      <option value="">All statuses</option>
+      <option value="expired" {% if request.GET.status == "expired" %}selected{% endif %}>Overdue</option>
+      <option value="soon" {% if request.GET.status == "soon" %}selected{% endif %}>Due soon</option>
+      <option value="valid" {% if request.GET.status == "valid" %}selected{% endif %}>Scheduled</option>
+    </select>
+    <button class="btn" type="submit">Filter</button>
+  </form>
+  <div style="display:flex; gap:8px; margin-left:12px;">
+    <a class="btn" href="{% url 'maintenance:manage_levels' %}">⚙ Manage levels</a>
+    <a class="btn btn-primary" href="{% url 'maintenance:create' %}">+ Add record</a>
+  </div>
+</div>
+
+{% if rows %}
+<div class="table-wrap">
+<table class="data-table">
+  <thead>
+    <tr><th>Serial Number</th><th>Category</th><th>Level</th><th>Due Date</th><th>Status</th><th>File</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r.equipment.serial_number }}</td>
+      <td>{{ r.equipment.category }}</td>
+      <td>{{ r.level.name }}</td>
+      <td>{{ r.due_date|default:"—" }}</td>
+      <td><span class="pill {{ r.status }}">
+        {% if r.status == "expired" %}Overdue{% elif r.status == "soon" %}Due soon{% elif r.status == "valid" %}Scheduled{% else %}No date{% endif %}
+      </span></td>
+      <td>{% if r.file %}<a href="{{ r.file.url }}" target="_blank">Open</a>{% else %}—{% endif %}</td>
+      <td><a href="{% url 'maintenance:edit' r.id %}">Manage</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">No maintenance records match the current filters.</div>
+{% endif %}
+{% endblock %}

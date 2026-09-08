@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Delete this maintenance record?</h1>
+<p class="page-sub">{{ record.equipment.serial_number }} · {{ record.level.name }} — this can't be undone. The file (if any) stays in storage.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn" style="border-color:var(--danger); color:var(--danger);">Yes, delete</button>
+  <a class="btn" href="{% url 'maintenance:list' %}" style="margin-left:8px;">Cancel</a>
+</form>
+{% endblock %}

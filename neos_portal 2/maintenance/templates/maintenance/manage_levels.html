@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Manage maintenance levels</h1>
+
+<div class="table-wrap" style="padding:24px; max-width:480px; margin-bottom:20px;">
+  <form method="post">
+    {% csrf_token %}
+    <label>Add a new level</label>
+    <input type="text" name="new_level" placeholder="e.g. Level 5">
+    <br><br>
+    <button type="submit" name="add" class="btn btn-primary">Add</button>
+  </form>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+  <thead><tr><th>Level</th><th></th></tr></thead>
+  <tbody>
+    {% for lvl in levels %}
+    <tr>
+      <td>{{ lvl.name }}</td>
+      <td>
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" name="delete" value="{{ lvl.id }}" class="link-button">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<a class="btn" style="margin-top:16px;" href="{% url 'maintenance:list' %}">← Back to Maintenance</a>
+{% endblock %}
