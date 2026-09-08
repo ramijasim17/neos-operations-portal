@@ -3,21 +3,22 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}NEOS Operations Portal{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'core/css/portal.css' %}">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand">NEOS Operations Portal</div>
+      <div class="brand"><span class="dot"></span> NEOS Operations Portal</div>
       <nav>
         {% for item in nav_items %}
-          <a href="{% url item.url_name %}">{{ item.label }}</a>
+          <a href="{% url item.url_name %}" class="{% if item.is_active %}active{% endif %}">{{ item.label }}</a>
         {% endfor %}
       </nav>
       <div class="user-box">
-        {{ request.user.username }} · {{ user_role|title }}<br>
-        <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+        <div class="who">{{ request.user.username }} · {{ user_role|title }}</div>
+        <form method="post" action="{% url 'accounts:logout' %}">
           {% csrf_token %}
           <button type="submit" class="link-button">Sign out</button>
         </form>
@@ -26,7 +27,7 @@
     <main class="main">
       {% if messages %}
         {% for message in messages %}
-          <div class="alert {% if message.tags == 'error' %}alert-error{% endif %}">{{ message }}</div>
+          <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">{{ message }}</div>
         {% endfor %}
       {% endif %}
       {% block content %}{% endblock %}
