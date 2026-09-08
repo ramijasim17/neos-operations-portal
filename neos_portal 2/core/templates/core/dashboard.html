@@ -1,5 +1,12 @@
 {% extends "core/base.html" %}
 {% block content %}
 <h1>Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
-<p>Use the sidebar to navigate. Available sections are based on your account role.</p>
+<p class="page-sub">Use the sidebar to navigate — available sections depend on your account role.</p>
+
+<div class="nc-stats">
+  <div class="nc-stat">
+    <div class="lbl">Your role</div>
+    <div class="val" style="font-size:18px;">{{ user_role|title }}</div>
+  </div>
+</div>
 {% endblock %}
