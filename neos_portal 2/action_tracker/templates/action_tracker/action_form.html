@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>New action</h1>
+<div class="table-wrap" style="padding:24px; max-width:480px;">
+<form method="post">
+  {% csrf_token %}
+  <label>Action / goal</label>{{ form.action_item }}
+  <label>Assignee</label>{{ form.assignee }}
+  <label>Priority</label>{{ form.priority }}
+  <label>Due date</label>{{ form.due_date }}
+  <label>{{ form.steps_text.label }}</label>{{ form.steps_text }}
+  <label>Initial comments</label>{{ form.comments }}
+  <br><br>
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+</div>
+{% endblock %}

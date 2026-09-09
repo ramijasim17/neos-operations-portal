@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Action Tracker</h1>
+
+<div class="nc-stats">
+  <div class="nc-stat"><div class="lbl">Active actions</div><div class="val">{{ counts.total }}</div></div>
+  <div class="nc-stat expired"><div class="lbl">High priority</div><div class="val">{{ counts.high }}</div></div>
+  <div class="nc-stat soon"><div class="lbl">In progress</div><div class="val">{{ counts.progress }}</div></div>
+  <div class="nc-stat valid"><div class="lbl">Completed</div><div class="val">{{ counts.completed }}</div></div>
+</div>
+
+<div style="margin-bottom:16px;"><a class="btn btn-primary" href="{% url 'action_tracker:create' %}">+ New action</a></div>
+
+<h2>Active</h2>
+{% if actions %}
+<div class="table-wrap" style="margin-bottom:28px;">
+<table class="data-table">
+  <thead><tr><th>Action</th><th>Assignee</th><th>Priority</th><th>Due</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+    {% for a in actions %}
+    <tr>
+      <td>{{ a.action_item }}</td>
+      <td>{{ a.assignee|default:"—" }}</td>
+      <td><span class="pill {% if a.priority == 'High' %}expired{% elif a.priority == 'Medium' %}soon{% else %}valid{% endif %}">{{ a.priority }}</span></td>
+      <td>{{ a.due_date|default:"—" }}</td>
+      <td>{{ a.status }}</td>
+      <td><a href="{% url 'action_tracker:detail' a.id %}">Open</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state" style="margin-bottom:28px;">No active actions. 🎉</div>
+{% endif %}
+
+<h2>Completed</h2>
+{% if completed %}
+<div class="table-wrap">
+<table class="data-table">
+  <thead><tr><th>Action</th><th>Assignee</th><th>Priority</th><th></th></tr></thead>
+  <tbody>
+    {% for a in completed %}
+    <tr><td>{{ a.action_item }}</td><td>{{ a.assignee|default:"—" }}</td><td>{{ a.priority }}</td><td><a href="{% url 'action_tracker:detail' a.id %}">Open</a></td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">No completed actions yet.</div>
+{% endif %}
+{% endblock %}

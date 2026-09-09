@@ -1,0 +1,57 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Work Approval &amp; SOC</h1>
+<p class="page-sub">Approval documents and Statement of Compliance records.</p>
+
+<div class="nc-stats">
+  <div class="nc-stat"><div class="lbl">Total records</div><div class="val">{{ total }}</div></div>
+  <div class="nc-stat expired"><div class="lbl">Expired</div><div class="val">{{ counts.expired }}</div></div>
+  <div class="nc-stat soon"><div class="lbl">Expiring &lt; 30 days</div><div class="val">{{ counts.soon }}</div></div>
+  <div class="nc-stat valid"><div class="lbl">Valid</div><div class="val">{{ counts.valid }}</div></div>
+</div>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+  <form method="get" class="filter-bar" style="margin-bottom:0; flex:1;">
+    <input type="text" name="q" placeholder="Search details…" value="{{ request.GET.q }}">
+    <select name="file_type">
+      <option value="">All types</option>
+      {% for t in file_types %}<option value="{{ t.name }}" {% if request.GET.file_type == t.name %}selected{% endif %}>{{ t.name }}</option>{% endfor %}
+    </select>
+    <select name="status">
+      <option value="">All statuses</option>
+      <option value="expired" {% if request.GET.status == "expired" %}selected{% endif %}>Expired</option>
+      <option value="soon" {% if request.GET.status == "soon" %}selected{% endif %}>Expiring soon</option>
+      <option value="valid" {% if request.GET.status == "valid" %}selected{% endif %}>Valid</option>
+    </select>
+    <button class="btn" type="submit">Filter</button>
+  </form>
+  <div style="display:flex; gap:8px; margin-left:12px;">
+    <a class="btn" href="{% url 'work_approval:manage_types' %}">⚙ Manage types</a>
+    <a class="btn btn-primary" href="{% url 'work_approval:create' %}">+ Add record</a>
+  </div>
+</div>
+
+{% if rows %}
+<div class="table-wrap">
+<table class="data-table">
+  <thead><tr><th>File Type</th><th>Expiry Date</th><th>Status</th><th>Details</th><th>File</th><th></th></tr></thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r.file_type.name }}</td>
+      <td>{{ r.expiry_date|default:"—" }}</td>
+      <td><span class="pill {{ r.status }}">
+        {% if r.status == "expired" %}Expired{% elif r.status == "soon" %}Expiring soon{% elif r.status == "valid" %}Valid{% else %}No expiry{% endif %}
+      </span></td>
+      <td>{{ r.details|truncatechars:60 }}</td>
+      <td>{% if r.file %}<a href="{{ r.file.url }}" target="_blank">Open</a>{% else %}—{% endif %}</td>
+      <td><a href="{% url 'work_approval:edit' r.id %}">Manage</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">No records match the current filters.</div>
+{% endif %}
+{% endblock %}

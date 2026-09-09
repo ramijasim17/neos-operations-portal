@@ -6,8 +6,12 @@ NAV_ITEMS = [
     {"label": "Equipment",           "url_name": "equipment:list",       "roles": ("admin", "editor", "viewer")},
     {"label": "Certificates",        "url_name": "equipment:cert_list",  "roles": ("admin", "editor", "viewer")},
     {"label": "Maintenance",         "url_name": "maintenance:list",     "roles": ("admin", "editor", "viewer")},
-    # SQB, Work Approval & SOC, Action Tracker, Personnel, Job Manager, and
-    # Daily Report follow the same pattern once their apps are built.
+    {"label": "Job Manager",         "url_name": "job_manager:list",     "roles": ("admin", "editor", "viewer")},
+    {"label": "Personnel",           "url_name": "personnel:list",       "roles": ("admin", "editor", "viewer")},
+    {"label": "Action Tracker",      "url_name": "action_tracker:list",  "roles": ("admin", "editor", "viewer")},
+    {"label": "Daily Report",        "url_name": "daily_report:list",    "roles": ("admin", "editor", "viewer")},
+    {"label": "Work Approval & SOC", "url_name": "work_approval:list",   "roles": ("admin", "editor", "viewer")},
+    {"label": "SQB",                 "url_name": "sqb:list",             "roles": ("admin", "editor", "viewer")},
     {"label": "Settings & Sync",     "url_name": "core:settings",        "roles": ("admin",)},
 ]
 
@@ -20,7 +24,7 @@ def nav_items(request):
 
     current_view_name = None
     if getattr(request, "resolver_match", None):
-        current_view_name = request.resolver_match.view_name
+        current_view_name = request.resolver_match.view_name  # e.g. "equipment:cert_list"
 
     visible = []
     for item in NAV_ITEMS:

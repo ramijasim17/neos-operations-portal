@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>New SQB job</h1>
+<div class="table-wrap" style="padding:24px; max-width:480px;">
+<form method="post">
+  {% csrf_token %}
+  <label>Job number</label>
+  <input type="text" name="job_number" placeholder="e.g. JOB-2026-014" required>
+  <label>Job name / description (optional)</label>
+  <input type="text" name="job_name">
+  <label>Job Permit Number (PTW No.)</label>
+  <input type="text" name="permit_number" placeholder="e.g. PTW-2026-0142">
+  <br><br>
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+</div>
+{% endblock %}

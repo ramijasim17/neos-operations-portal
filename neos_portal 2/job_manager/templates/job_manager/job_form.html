@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{% if mode == "edit" %}{{ job.job_name }}{% else %}New job{% endif %}</h1>
+<div class="table-wrap" style="padding:24px; max-width:480px;">
+<form method="post">
+  {% csrf_token %}
+  <label>Job name</label>{{ form.job_name }}
+  <label>Client</label>{{ form.client }}
+  <label>Date</label>{{ form.date }}
+  <label>Equipment list</label>{{ form.equipment_list }}
+  <br><br>
+  <button type="submit" class="btn btn-primary">Save</button>
+  {% if mode == "edit" %}<a class="btn" style="margin-left:8px;" href="{% url 'job_manager:delete' job.id %}">Delete</a>{% endif %}
+</form>
+</div>
+{% endblock %}

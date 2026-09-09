@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Job Manager</h1>
+<p class="page-sub">{{ total }} job(s).</p>
+<div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+  <form method="get" class="filter-bar" style="margin-bottom:0; flex:1;">
+    <input type="text" name="q" placeholder="Search job name…" value="{{ request.GET.q }}">
+    <button class="btn" type="submit">Filter</button>
+  </form>
+  <a class="btn btn-primary" href="{% url 'job_manager:create' %}">+ New job</a>
+</div>
+{% if jobs %}
+<div class="table-wrap">
+<table class="data-table">
+  <thead><tr><th>Job Name</th><th>Client</th><th>Date</th><th>Equipment</th><th></th></tr></thead>
+  <tbody>
+    {% for j in jobs %}
+    <tr>
+      <td>{{ j.job_name }}</td><td>{{ j.client|default:"—" }}</td><td>{{ j.date|default:"—" }}</td>
+      <td>{{ j.equipment_list|truncatechars:50|default:"—" }}</td>
+      <td><a href="{% url 'job_manager:edit' j.id %}">Manage</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">No jobs yet.</div>
+{% endif %}
+{% endblock %}

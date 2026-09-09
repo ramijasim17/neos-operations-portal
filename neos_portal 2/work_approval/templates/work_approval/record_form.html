@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{% if mode == "edit" %}{{ record.file_type.name }}{% else %}Add record{% endif %}</h1>
+{% if record.file %}<p><a href="{{ record.file.url }}" target="_blank">📄 View current file</a></p>{% endif %}
+<div class="table-wrap" style="padding:24px; max-width:480px;">
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <label>File type</label>{{ form.file_type }}
+  <label>Expiry date</label>{{ form.expiry_date }}
+  <label>Details</label>{{ form.details }}
+  <label>{% if record.file %}Replace file{% else %}File{% endif %}</label>{{ form.file }}
+  <br><br>
+  <button type="submit" class="btn btn-primary">Save</button>
+  {% if mode == "edit" %}<a class="btn" style="margin-left:8px;" href="{% url 'work_approval:delete' record.id %}">Delete</a>{% endif %}
+</form>
+</div>
+{% endblock %}

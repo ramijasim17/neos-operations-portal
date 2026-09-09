@@ -8,6 +8,12 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("equipment/", include("equipment.urls")),
     path("maintenance/", include("maintenance.urls")),
+    path("sqb/", include("sqb.urls")),
+    path("work-approval/", include("work_approval.urls")),
+    path("actions/", include("action_tracker.urls")),
+    path("jobs/", include("job_manager.urls")),
+    path("daily-report/", include("daily_report.urls")),
+    path("personnel/", include("personnel.urls")),
     path("", include("core.urls")),
 ]
 

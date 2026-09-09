@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>SQB — Safety &amp; Quality Bundle</h1>
+
+<div class="nc-stats">
+  <div class="nc-stat"><div class="lbl">Total jobs</div><div class="val">{{ total_jobs }}</div></div>
+  <div class="nc-stat valid"><div class="lbl">Complete</div><div class="val">{{ n_complete }}</div></div>
+  <div class="nc-stat soon"><div class="lbl">In progress</div><div class="val">{{ n_partial }}</div></div>
+  <div class="nc-stat expired"><div class="lbl">Not started</div><div class="val">{{ n_empty }}</div></div>
+</div>
+
+<div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+  <form method="get" class="filter-bar" style="margin-bottom:0; flex:1;">
+    <input type="text" name="q" placeholder="Search job number…" value="{{ request.GET.q }}">
+    <button class="btn" type="submit">Filter</button>
+  </form>
+  <a class="btn btn-primary" href="{% url 'sqb:create' %}">+ New job</a>
+</div>
+
+{% if rows %}
+<div class="table-wrap">
+<table class="data-table">
+  <thead><tr><th>Job Number</th><th>Job Name</th><th>Permit No.</th><th>Documents</th><th></th></tr></thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r.job.job_number }}</td>
+      <td>{{ r.job.job_name|default:"—" }}</td>
+      <td>{{ r.job.permit_number|default:"—" }}</td>
+      <td>
+        {% if r.uploaded == r.total %}<span class="pill valid">Complete</span>
+        {% elif r.uploaded == 0 %}<span class="pill na">Not started</span>
+        {% else %}<span class="pill soon">{{ r.uploaded }}/{{ r.total }}</span>{% endif %}
+      </td>
+      <td><a href="{% url 'sqb:detail' r.job.job_number %}">Open</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">No SQB jobs yet.</div>
+{% endif %}
+{% endblock %}

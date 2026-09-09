@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Manage file types</h1>
+<div class="table-wrap" style="padding:24px; max-width:480px; margin-bottom:20px;">
+  <form method="post">
+    {% csrf_token %}
+    <label>Add a new type</label>
+    <input type="text" name="new_type" placeholder="e.g. Permit To Work">
+    <br><br>
+    <button type="submit" name="add" class="btn btn-primary">Add</button>
+  </form>
+</div>
+<div class="table-wrap">
+<table class="data-table">
+  <thead><tr><th>Type</th><th></th></tr></thead>
+  <tbody>
+    {% for t in file_types %}
+    <tr>
+      <td>{{ t.name }}</td>
+      <td><form method="post" style="display:inline;">{% csrf_token %}<button type="submit" name="delete" value="{{ t.id }}" class="link-button">Delete</button></form></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<a class="btn" style="margin-top:16px;" href="{% url 'work_approval:list' %}">← Back</a>
+{% endblock %}

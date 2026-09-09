@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     "core",
     "equipment",
     "maintenance",
+    "sqb",
+    "work_approval",
+    "action_tracker",
+    "job_manager",
+    "daily_report",
+    "personnel",
 ]
 
 MIDDLEWARE = [

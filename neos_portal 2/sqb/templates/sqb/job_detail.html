@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{{ job.job_number }}</h1>
+{% if job.job_name %}<p class="page-sub">{{ job.job_name }}</p>{% endif %}
+
+<div class="table-wrap" style="padding:20px; margin-bottom:20px; max-width:480px;">
+  <form method="post">
+    {% csrf_token %}
+    <label>Job Permit Number</label>
+    <input type="text" name="permit_number" value="{{ job.permit_number }}">
+    <br><br>
+    <button type="submit" name="save_permit" value="1" class="btn btn-primary">Save permit number</button>
+  </form>
+</div>
+
+<p><strong>{{ uploaded }} / {{ total }}</strong> documents uploaded</p>
+{% if uploaded == total %}
+  <p><a class="btn btn-primary" href="{% url 'sqb:compile' job.job_number %}">📎 Download compiled PDF</a></p>
+{% else %}
+  <p class="page-sub">Compile becomes available once every document is uploaded.</p>
+{% endif %}
+
+<form method="post" action="{% url 'sqb:upload' job.job_number %}" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="table-wrap">
+  <table class="data-table">
+    <thead><tr><th>Document</th><th>Status</th><th>Current file</th><th>Upload / Replace</th></tr></thead>
+    <tbody>
+      {% for item in checklist %}
+      <tr>
+        <td>{{ item.doc_type }}</td>
+        <td>{% if item.doc and item.doc.file %}<span class="pill valid">✅ Uploaded</span>{% else %}<span class="pill na">⚪ Missing</span>{% endif %}</td>
+        <td>{% if item.doc and item.doc.file %}<a href="{{ item.doc.file.url }}" target="_blank">View</a>{% else %}—{% endif %}</td>
+        <td><input type="file" name="file_{{ item.doc_type }}" accept="application/pdf"></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<br>
+<button type="submit" class="btn btn-primary">💾 Save all uploaded files</button>
+</form>
+
+<form method="post" style="margin-top:24px;">
+  {% csrf_token %}
+  <button type="submit" name="delete_job" value="1" class="btn" style="border-color:var(--danger); color:var(--danger);">🗑️ Delete this job</button>
+</form>
+{% endblock %}
